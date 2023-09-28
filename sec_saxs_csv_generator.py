@@ -25,12 +25,18 @@ class SmallMolecule:
         return f"{self.name}, {self.formula}, {self.amount}, {self.units}, {self.database}, {self.database_id}"
 
 
+filename_correct = True
 filename = input("Enter dataset code: ")
+while filename_correct:
+    correct = input(f"\nYou entered:\n{filename}\nIs this correct?(y/n): ")
+    if correct == "y":
+        filename_correct = False
 
+print()
 filerange_correct = True
 while filerange_correct:
     file_prefix = input("Enter file prefix: ")
-    file_suffix = input("Enter file suffix: ")
+    file_extension = input("Enter file extension: ")
     file_start = input("Enter file start: ")
     file_end = input("Enter file end: ")
     file_start_num = int(file_start.lstrip("0"))
@@ -38,25 +44,28 @@ while filerange_correct:
     num_samples = file_end_num - file_start_num + 1
     num_samples_magnitude = len(file_start)
     correct = input(
-        f"You entered:\n{file_prefix}.{file_start}{file_suffix} to {file_prefix}.{file_end}{file_suffix}\nIs this correct?(y/n): "
+        f"\nYou entered:\n{file_prefix}.{file_start}{file_extension} to {file_prefix}.{file_end}{file_extension}\nIs this correct?(y/n): "
     )
     if correct == "y":
         filerange_correct = False
 
+print()
 solvent_correct = True
 while solvent_correct:
     solvent = input("Enter solvent: ")
-    correct = input(f"You entered:\n{solvent}\nIs this correct?(y/n): ")
+    correct = input(f"\nYou entered:\n{solvent}\nIs this correct?(y/n): ")
     if correct == "y":
         solvent_correct = False
 
+print()
 ph_correct = True
 while ph_correct:
     ph = input("Enter pH: ")
-    correct = input(f"You entered:\n{ph}\nIs this correct?(y/n): ")
+    correct = input(f"\nYou entered:\n{ph}\nIs this correct?(y/n): ")
     if correct == "y":
         ph_correct = False
 
+print()
 macromolecules = []
 macromolecule_running = True
 while macromolecule_running:
@@ -68,7 +77,7 @@ while macromolecule_running:
     macromolecule_database = input("Enter macromolecule database: ")
     macromolecule_database_id = input("Enter macromolecule database ID: ")
     correct = input(
-        f"You entered:\n{macromolecule_name}, {macromolecule_type}, {macromolecule_sequence}, {macromolecule_amount}, {macromolecule_units}, {macromolecule_database}, {macromolecule_database_id}\nIs this correct?(y/n): "
+        f"\nYou entered:\n{macromolecule_name}, {macromolecule_type}, {macromolecule_sequence}, {macromolecule_amount}, {macromolecule_units}, {macromolecule_database}, {macromolecule_database_id}\nIs this correct?(y/n): "
     )
     if correct == "y":
         macromolecule = MacroMolecule(
@@ -80,30 +89,15 @@ while macromolecule_running:
             macromolecule_database,
             macromolecule_database_id,
         )
-        # macromolecule.append(macromolecule_name)
-        # macromolecule.append(macromolecule_type)
-        # macromolecule.append(macromolecule_sequence)
-        # macromolecule.append(macromolecule_amount)
-        # macromolecule.append(macromolecule_units)
-        # macromolecule.append(macromolecule_database)
-        # macromolecule.append(macromolecule_database_id)
         macromolecules.append(macromolecule)
     done = input("Done? (y/n): ")
     if done == "y":
         macromolecule_running = False
 
-
+print()
 small_molecules = []
 small_molecule_running = True
 while small_molecule_running:
-    # smallmolecule = SmallMolecule(
-    #     small_molecule_name,
-    #     small_molecule_formula,
-    #     small_molecule_amount,
-    #     small_molecule_units,
-    #     small_molecule_database,
-    #     small_molecule_database_id,
-    # )
     small_molecule_name = input("Enter small molecule name: ")
     small_molecule_formula = input("Enter small molecule formula: ")
     small_molecule_amount = input("Enter small molecule amount: ")
@@ -111,7 +105,7 @@ while small_molecule_running:
     small_molecule_database = input("Enter small molecule database: ")
     small_molecule_database_id = input("Enter small molecule database ID: ")
     correct = input(
-        f"You entered:\n{small_molecule_name}, {small_molecule_formula}, {small_molecule_amount}, {small_molecule_units}, {small_molecule_database}, {small_molecule_database_id}\nIs this correct?(y/n): "
+        f"\nYou entered:\n{small_molecule_name}, {small_molecule_formula}, {small_molecule_amount}, {small_molecule_units}, {small_molecule_database}, {small_molecule_database_id}\nIs this correct?(y/n): "
     )
     if correct == "y":
         small_molecule = SmallMolecule(
@@ -122,20 +116,10 @@ while small_molecule_running:
             small_molecule_database,
             small_molecule_database_id,
         )
-        # small_molecule.append(small_molecule_name)
-        # small_molecule.append(small_molecule_amount)
-        # small_molecule.append(small_molecule_units)
-        # small_molecule.append(small_molecule_database)
-        # small_molecule.append(small_molecule_database_id)
         small_molecules.append(small_molecule)
     done = input("Done? (y/n): ")
     if done == "y":
         small_molecule_running = False
-
-print(num_samples_magnitude)
-for i in range(int(num_samples)):
-    fname = f"{file_prefix}.{str(i+1).zfill(num_samples_magnitude)}{file_suffix}"
-    print(f"{fname} {solvent} {ph} {macromolecules} {small_molecules}")
 
 # Make a .csv file using the filename
 output = open(f"{filename}.csv", "w")
@@ -153,13 +137,12 @@ output.write(header)
 # Write the data
 for i in range(int(num_samples)):
     row = ""
-    row += f"{file_prefix}.{str(i+1).zfill(num_samples_magnitude)}{file_suffix},"
+    row += f"{file_prefix}.{str(i+1).zfill(num_samples_magnitude)}{file_extension},"
     row += f"{solvent},"
     row += f"{ph},"
     for macromolecule in macromolecules:
         row += f"{macromolecule.name},{macromolecule.type},{macromolecule.sequence},{macromolecule.amount},{macromolecule.units},{macromolecule.database},{macromolecule.database_id},"
     for small_molecule in small_molecules:
         row += f"{small_molecule.name},{small_molecule.formula},{small_molecule.amount},{small_molecule.units},{small_molecule.database},{small_molecule.database_id},"
-        # row += f"{small_molecule_name},{small_molecule_formula},{small_molecule_amount},{small_molecule_units},{small_molecule_database},{small_molecule_database_id},"
     row += "\n"
     output.write(row)
